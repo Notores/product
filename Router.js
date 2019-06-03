@@ -12,14 +12,14 @@ class ProductRouter {
     }
 
     static async get(req, res, next) {
-        res.locals.themePage = 'products';
+        res.locals.page = 'products';
         await ProductRouter.getProductList(req, res);
 
         next();
     }
 
     static async getHot(req, res, next) {
-        res.locals.themePage = 'products';
+        res.locals.page = 'products';
         await ProductRouter.getProductList(req, res, [{hot: true}]);
 
         next();
@@ -66,7 +66,7 @@ class ProductRouter {
     }
 
     static async getAdmin(req, res, next) {
-        res.locals.themePage = 'products';
+        res.locals.page = 'products';
 
         const Product = ProductRouter.getModel();
 
@@ -90,12 +90,12 @@ class ProductRouter {
                 .exec();
 
             if (result)
-                res.locals.themePage = 'product-id';
+                res.locals.page = 'product-id';
             else
                 return next('route');
 
             res.locals.setBody({product: result});
-            res.locals.themePage = 'single-product';
+            res.locals.page = 'single-product';
             return next();
         } catch (e) {
             res.locals.setBody({product: e});
@@ -114,12 +114,12 @@ class ProductRouter {
                 .exec();
 
             if (result)
-                res.locals.themePage = 'single-product';
+                res.locals.page = 'single-product';
             else
                 return next('route');
 
             res.locals.setBody({product: result});
-            res.locals.themePage = 'single-product';
+            res.locals.page = 'single-product';
             return next();
         } catch (e) {
             res.locals.setBody({product: e});

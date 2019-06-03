@@ -2,7 +2,7 @@ const {stringToUrl} = require("../lib/stringExtend");
 const {Schema} = require('mongoose');
 const {MongoSchema} = require('@notores/core');
 
-const ProductSchema = new Schema({
+const Product = new MongoSchema('Product', {
     ean: {type: String, required: false, index: false},
     sku: {
         type: String, required: true, index: false,
@@ -61,22 +61,21 @@ const ProductSchema = new Schema({
 });
 //todo:
 ///todo:
-ProductSchema.virtual('inStock').get(function () {
+Product.virtual('inStock').get(function () {
     if (this.stock.track)
         return this.stock.amount > 0;
     else
         return true;
 });
 
-ProductSchema.virtual('trackStock').get(function () {
+Product.virtual('trackStock').get(function () {
     return this.stock.track;
 });
 
-ProductSchema.virtual('price').get(function () {
+Product.virtual('price').get(function () {
     return this.pricing.price;
 });
 
-const Product = new MongoSchema('Product', ProductSchema);
 
 Product.updateWhitelist('get', [
     'ean',

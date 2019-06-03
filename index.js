@@ -1,15 +1,10 @@
 const {NotoresModule} = require('@notores/core');
-class ProductModule extends NotoresModule {
-    
-    constructor(){
-        super();
 
-        const Product = require('./model');
-        this.setModel(Product.modelName, Product);
-        Product.loadModel();
-    }
+class ProductModule extends NotoresModule {
 
     init(){
+        super.init();
+
         const Locals = require('@notores/core').Locals;
 
         Locals.extend({
@@ -18,7 +13,11 @@ class ProductModule extends NotoresModule {
             }
         });
 
-        require('./routes')();
+        const Product = require('./models/product');
+        this.setModel(Product.modelName, Product);
+        Product.loadModel();
+
+        require('./routes');
     }
 }
 
