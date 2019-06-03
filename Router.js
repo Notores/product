@@ -4,11 +4,11 @@ const {stringToUrl} = require("./lib/stringExtend");
 class ProductRouter {
 
     static getModel() {
-        return require('./model').schema;
+        return require('./model').Product.model;
     }
 
     static getModelWrapper() {
-        return require('./model');
+        return require('./model').Product;
     }
 
     static async get(req, res, next) {
@@ -34,7 +34,7 @@ class ProductRouter {
 
     static async getProductList(req, res, filters = [], key = 'product') {
         const Wrapper = ProductRouter.getModelWrapper();
-        const Product = Wrapper.model;
+        const Product = ProductRouter.getModel();
 
         const mongoQuery = {$and: [{live: true}, ...filters]};
 
@@ -86,7 +86,7 @@ class ProductRouter {
         try {
             const Product = ProductRouter.getModel();
 
-            const result = await Product.findOne({_id: id})
+            const result = await Product.findById(id)
                 .exec();
 
             if (result)
@@ -156,7 +156,7 @@ class ProductRouter {
     static async patch(req, res, next) {
         const Product = ProductRouter.getModel();
 
-        const product = await Product.findOne({_id: req.params.id});
+        const product = await Product.findById(req.params.id);
 
         if (product)
             await product.updateAndSave(req.body);
